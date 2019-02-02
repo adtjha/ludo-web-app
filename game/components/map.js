@@ -41,7 +41,6 @@ function ludoMap(x,y) {
       switch (i) {
         case 0:
           colors.push("GREEN");
-
           radian.push(45);
           break;
         case 1:
