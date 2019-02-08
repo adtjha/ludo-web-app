@@ -23,6 +23,7 @@ function createludoMap(x, y) {
     this.createPaths();
     this.createfinalSquare();
     this.createhomeSquare();
+    this.placePawns(homeSquares);
   }
 
   this.render = () => {
@@ -30,6 +31,7 @@ function createludoMap(x, y) {
     this.renderFinalSquare();
     this.renderHomeSquare();
     this.renderPaths();
+    this.renderPawn();
   }
 
   this.halfSize = (x / 2 + y / 2) / 2;
@@ -44,7 +46,7 @@ function createludoMap(x, y) {
   // }
 
   this.background = () => {
-    background(220);
+    // background(220);
   };
 
   this.createfinalSquare = () => {
@@ -239,6 +241,15 @@ function createludoMap(x, y) {
     finalPath.forEach(cell => {
       cell.render()
     });
+  }
+
+  this.placePawns = (start) => {
+    var size = 20;
+    console.log(start);
+  }
+
+  this.renderPawn = () => {
+
   }
 
 }

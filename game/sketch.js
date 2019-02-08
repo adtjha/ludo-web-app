@@ -1,6 +1,11 @@
 var xSize = 601;
 var ySize = 601;
 var map;
+let pawn;
+
+function preload() {
+  pawn = loadImage('assets/pawn.png');
+}
 
 function setup() {
   // put setup code here

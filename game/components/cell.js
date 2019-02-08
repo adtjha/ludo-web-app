@@ -1,34 +1,37 @@
-function Cell (x, y, size, side) {
-    this.size = size;
-    this.x = x;
-    this.y = y;
-    this.hidden = false;
-    this.side = side;
+function Cell(x, y, size, side) {
+  this.size = size;
+  this.x = x;
+  this.y = y;
+  this.hidden = false;
+  this.side = side;
 
-    // this.contains = [],
-    // 
-    // this.cellNext = () => {
-    //   switch (this.side) {
-    //     case "TOP":
-    //
-    //       break;
-    //     case "BOTTOM":
-    //
-    //       break;
-    //     case "LEFT":
-    //
-    //       break;
-    //     case expression:
-    //
-    //       break;
-    //   }
-    // }
+  // this.contains = ['true', [array stores locationsof pawns]],
+  this.contains = [];
+  this.pawns = [];
+  //
+  // this.cellNext = () => {
+  //   switch (this.side) {
+  //     case "TOP":
+  //
+  //       break;
+  //     case "BOTTOM":
+  //
+  //       break;
+  //     case "LEFT":
+  //
+  //       break;
+  //     case expression:
+  //
+  //       break;
+  //   }
+  // }
 
   Cell.prototype.render = function() {
-    if(!this.hidden){
+    if (!this.hidden) {
       push();
+      // display the squares.
       if (this.color) {
-        if(this.type === "FINAL_PATH"){
+        if (this.type === "FINAL_PATH") {
           // console.log(this.side);
           switch (this.side) {
             case "TOP":
@@ -48,11 +51,15 @@ function Cell (x, y, size, side) {
         if (this.type === "OUTER_PATH") {
           fill(color(this.color[0]));
         }
+        // display the starting home squares.
         if (this.type === "HOME_SQUARE") {
           fill(color(this.color));
         }
       }
       ellipse(this.x, this.y, this.size, this.size);
+      if (this.contains[0]) {
+        image(pawn, this.contains[1].x, this.contains[1].y);
+      }
     }
     pop();
   }
