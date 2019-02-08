@@ -3,7 +3,6 @@ function Final( x, y, size, r, fil) {
   this.y = y;
   this.size = size;
   this.r = r;
-  console.log(this.x, this.y, this.size, this.size, (this.r), ((this.r===315)?(45):(this.r+90)), PIE);
   this.fil = fil;
 
   this.render = () => {

@@ -5,29 +5,25 @@ var map;
 function setup() {
   // put setup code here
   createCanvas(xSize, ySize);
-  map = new ludoMap(xSize, ySize);
-  map.createPaths();
-  map.createfinalSquare();
-  map.createhomeSquare();
-  noLoop();
+  map = new createludoMap(xSize, ySize);
+  map.initialize();
+  // noLoop();
 }
 
 function draw() {
   // put drawing code here
-  map.background();
-  map.renderFinalSquare();
-  map.renderHomeSquare();
-  map.renderPaths();
-  map.onTop();
+  map.render();
+  // map.onTop();
+
 }
 
-
-function mousePressed() {
-  loop();
-  console.log('loop');
-}
-
-function mouseReleased() {
-  noLoop();
-  console.log('no loop');
-}
+//
+// function mousePressed() {
+//   loop();
+//   console.log('loop');
+// }
+//
+// function mouseReleased() {
+//   noLoop();
+//   console.log('no loop');
+// }

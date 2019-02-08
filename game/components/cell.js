@@ -5,31 +5,23 @@ function Cell (x, y, size, side) {
     this.hidden = false;
     this.side = side;
 
-    // this.color = '',
     // this.contains = [],
-    // this.pathType = '',
-    // this.type = '';
-
-    // this.hidden = () => {
-    //   finalPath.forEach(elem => {
-    //     // elem.hidden = true;
-    //   });
-    // };
-
-    // this.color = () => {
+    // 
+    // this.cellNext = () => {
+    //   switch (this.side) {
+    //     case "TOP":
     //
-    // };
+    //       break;
+    //     case "BOTTOM":
     //
-    // this.outline = () => {
+    //       break;
+    //     case "LEFT":
     //
-    // };
+    //       break;
+    //     case expression:
     //
-    // this.showPawn = () => {
-    //
-    // }
-    //
-    // this.numberOfPawnInside = () => {
-    //
+    //       break;
+    //   }
     // }
 
   Cell.prototype.render = function() {
@@ -55,6 +47,9 @@ function Cell (x, y, size, side) {
         }
         if (this.type === "OUTER_PATH") {
           fill(color(this.color[0]));
+        }
+        if (this.type === "HOME_SQUARE") {
+          fill(color(this.color));
         }
       }
       ellipse(this.x, this.y, this.size, this.size);
