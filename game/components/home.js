@@ -31,11 +31,7 @@ function Home(x, y, size, radius, c) {
     this.inner.forEach(e => {
       e.type = "HOME_SQUARE";
       e.color = "#FFF";
-      e.contains.push(true);
-      e.contains.push({
-        x: e.x - 25,
-        y: e.y - 25
-      })
+      e.pawns = new Pawn((e.x - 25), (e.y - 25), this.c);
     });
   }
 

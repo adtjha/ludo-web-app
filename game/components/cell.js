@@ -6,8 +6,7 @@ function Cell(x, y, size, side) {
   this.side = side;
 
   // this.contains = ['true', [array stores locationsof pawns]],
-  this.contains = [];
-  this.pawns = [];
+  // this.contains = [];
   //
   // this.cellNext = () => {
   //   switch (this.side) {
@@ -26,7 +25,7 @@ function Cell(x, y, size, side) {
   //   }
   // }
 
-  Cell.prototype.render = function() {
+  this.render = function() {
     if (!this.hidden) {
       push();
       // display the squares.
@@ -57,8 +56,9 @@ function Cell(x, y, size, side) {
         }
       }
       ellipse(this.x, this.y, this.size, this.size);
-      if (this.contains[0]) {
-        image(pawn, this.contains[1].x, this.contains[1].y);
+      if (this.pawns) {
+        // image(pawn, this.contains[1].x, this.contains[1].y);
+        this.pawns.render();
       }
     }
     pop();
