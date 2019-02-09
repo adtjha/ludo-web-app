@@ -7,6 +7,8 @@ function Home(x, y, size, radius, c) {
   this.inner = [];
   this.innnerSize = 60;
 
+  this.steps = [];
+
   // STEPS TO CREATE INNER CIRCLES.
   // 1. loop 4 times and create 4 cells, each cell contains the pawn.
   // 2. fill all the InnerCircles with pawn.

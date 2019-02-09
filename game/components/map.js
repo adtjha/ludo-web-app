@@ -1,6 +1,7 @@
 var homeSquares = [],
   finalSquares = [],
   outerPath = [],
+  steps = [0, 1, 2, 4, 6, 8, 10, 12, 39, 41, 43, 45, 47, 49, 50, 51, 48, 46, 44, 42, 40, 14, 16, 18, 20, 22, 25, 24, 23, 21, 19, 17, 15, 13, 38, 36, 34, 32, 30, 28, 27, 26, 29, 31, 33, 35, 37, 11, 9, 7, 5, 3],
   finalPath = [];
 
 // COLORS
@@ -23,7 +24,6 @@ function createludoMap(x, y) {
     this.createPaths();
     this.createfinalSquare();
     this.createhomeSquare();
-    this.placePawns(homeSquares);
   }
 
   this.render = () => {
@@ -31,7 +31,6 @@ function createludoMap(x, y) {
     this.renderFinalSquare();
     this.renderHomeSquare();
     this.renderPaths();
-    this.renderPawn();
   }
 
   this.halfSize = (x / 2 + y / 2) / 2;
@@ -46,7 +45,7 @@ function createludoMap(x, y) {
   // }
 
   this.background = () => {
-    // background(220);
+    background(220);
   };
 
   this.createfinalSquare = () => {
@@ -123,6 +122,8 @@ function createludoMap(x, y) {
     }
     homeSquares.forEach(elem => {
       elem.createInnerCircles();
+      elem.steps = arrangePath(elem.c);
+      console.log(elem.steps);
     });
     // fill(color('BLUE'));
     // rect(0, 0, 200, 200, 20);
@@ -210,28 +211,108 @@ function createludoMap(x, y) {
       outerPath.push(new Cell(offset + (i * size + i * inner_spacing), 360, size, "RIGHT"))
     }
 
-    this.assignColor();
-    this.assignType();
     // arrangePath();
-  };
+    assignType = () => {
+      outerPath.forEach(cell => {
+        cell.type = "OUTER_PATH"
+      });
+      finalPath.forEach(cell => {
+        cell.type = "FINAL_PATH"
+      });
+    };
+    assignColor = () => {
+      outerPath.forEach((cell, index) => {
+        cell.color = () => {
+          if (index === 4) {
+            return ["YELLOW"];
+          } else if (index === 21) {
+            return ["GREEN"];
+          } else if (index === 29) {
+            return ["BLUE"];
+          } else if (index === 48) {
+            return ["RED"];
+          } else {
+            return ["#ccc"];
+          }
+        };
+        // cell.index = (index < 10) ? ('0' + index.toString()) : index;
+        cell.index = index;
 
-  this.assignType = () => {
-    outerPath.forEach(cell => {
-      cell.type = "OUTER_PATH"
-    });
-    finalPath.forEach(cell => {
-      cell.type = "FINAL_PATH"
-    });
-  }
+        cell.outline = () => {
+          if (index === 5) {
+            return true;
+          } else if (index === 20) {
+            return true;
+          } else if (index === 32) {
+            return true;
+          } else if (index === 45) {
+            return true;
+          } else {
+            return false;
+          }
+        };
+      });
+      finalPath.forEach((cell, index) => {
 
-  this.assignColor = () => {
-    outerPath.forEach(cell => {
-      cell.color = ["#444"]
-    });
-    finalPath.forEach(cell => {
-      cell.color = ["RED", "YELLOW", "BLUE", "GREEN"]
-      // 1, 3, 2, 0
-    });
+        // cell.index = (index < 10) ? ('0' + index.toString()) : index;
+        cell.index = index;
+
+        // cell.color = ["RED", "YELLOW", "BLUE", "GREEN"];
+        cell.color = () => {
+          switch (cell.side) {
+            case "TOP":
+              // fill(color(this.color[1]));
+              return ["YELLOW"];
+              break;
+            case "BOTTOM":
+              // fill(color(this.color[3]));
+              return ["GREEN"];
+              break;
+            case "LEFT":
+              // fill(color(this.color[2]));
+              return ["BLUE"];
+              break;
+            case "RIGHT":
+              // fill(color(this.color[0]));
+              return ["RED"];
+              break;
+          }
+        }
+        // 1, 3, 2, 0
+      });
+    };
+
+    arrangePath = (color) => {
+      route = {
+        team: color,
+        start: [],
+        mid: [],
+        end: []
+      };
+      outerPath.forEach((cell) => {
+        if (cell.color()[0] != "#ccc" && cell.color()[0] === route.team) {
+          route.start.push(cell);
+          return;
+        } else if (cell.color()[0] === "#ccc") {
+          route.mid.push(cell);
+        }
+      });
+
+      route.mid = rearrange(route);
+
+      finalPath.forEach(cell => {
+        if (cell.color()[0] === route.team) {
+          route.end.push(cell);
+          return;
+        }
+      });
+      return route;
+      // console.log(route);
+    }
+
+    assignType();
+    assignColor();
+
   }
 
   this.renderPaths = () => {
@@ -243,13 +324,31 @@ function createludoMap(x, y) {
     });
   }
 
-  this.placePawns = (start) => {
-    var size = 20;
-    console.log(start);
+}
+
+function rearrange(route) {
+  // check the index of starting point,
+  // set start =  index of starting point, ==> loop_counter = start
+  counter = int(steps.findIndex((a) => {
+    if (a === route.start[0].index) {
+      return a
+    }
+  })) + 1;
+  arranged = false;
+  mid = [];
+  // in each loop store the current cell, ==> route.mid.push(step[loop_counter]),
+  for (let i = 0; i < steps.length - 2; i++) {
+    mid.push(outerPath[steps[counter]]);
+    counter = (counter <= 50) ? counter + 1 : 0;
   }
+  // loop through steps[] starting from start, ==> loop_counter++
+  // incremeant loop till the modulus of loop_counter reaches 0 again, ==> (loop_counter%48 != 0)?LOOP_AGAIN:BREAK;
+  return mid;
+  // return the arranged route;
+}
 
-  this.renderPawn = () => {
-
+function nxt(a, b) {
+  if (a < b.length) {
+    return b(a + 1);
   }
-
 }
