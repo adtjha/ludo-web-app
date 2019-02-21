@@ -162,7 +162,13 @@ function game() {
   }
 
   this.move = () => {
-    var state = checkState(this.currentTeam);
+    function checkState(x, y) {
+
+      return y[x].pawns.out;
+
+    }
+
+    var state = checkState(this.currentTeam, this.teams);
     if (state.pawnsOut === 0) {
       if (this.dice === 6) {
         movePawns(this.currentTeam, 'out');
