@@ -9,25 +9,9 @@ function Cell(x, y, size, side) {
     return steps[steps.indexOf(current) + 1];
   }
 
-  // this.contains = ['true', [array stores locationsof pawns]],
+  this.pawns = [];
+  // this.contains = ['true', [array stores locations of pawns]],
   // this.contains = [];
-  //
-  // this.cellNext = () => {
-  //   switch (this.side) {
-  //     case "TOP":
-  //
-  //       break;
-  //     case "BOTTOM":
-  //
-  //       break;
-  //     case "LEFT":
-  //
-  //       break;
-  //     case expression:
-  //
-  //       break;
-  //   }
-  // }
 
   this.render = function() {
     if (!this.hidden) {
@@ -52,19 +36,21 @@ function Cell(x, y, size, side) {
       ellipse(this.x, this.y, this.size, this.size);
       if (this.type === "OUTER_PATH") {
         fill(color('black'));
-        noStroke();
-        text(this.index, this.x - 7, this.y + 4);
+        // noStroke();
+        // text(this.index, this.x - 7, this.y + 4);
       }
       if (this.type === "FINAL_PATH") {
         fill(color('white'));
-        // noStroke();
-        stroke(51);
-        strokeWeight(5);
-        text(this.index, this.x - 7, this.y + 4);
+        // // noStroke();
+        // stroke(51);
+        // strokeWeight(5);
+        // text(this.index, this.x - 7, this.y + 4);
       }
-      if (this.pawns) {
+      if (this.pawns && this.pawns.length > 0) {
         // image(pawn, this.contains[1].x, this.contains[1].y);
-        this.pawns.render();
+        this.pawns.forEach(e => {
+          e.render();
+        });
       }
     }
     pop();

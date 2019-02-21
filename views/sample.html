@@ -1,73 +1,70 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>home</title>
-  <style media="screen">
-    * {
-      font-family: sans-serif;
-    }
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>home</title>
+    <style media="screen">
+      * {
+        font-family: sans-serif;
+      }
+      html {
+        height: 95%;
+      }
+      body {
+        display: flex;
+        margin: 0;
+        height: -webkit-fill-available;
+        background: linear-gradient(0deg, #0aff8e, #8bff50, #ff8c91, #8499ff);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-color: #ff34345e;
+        background-blend-mode: darken;
+      }
+      .box {
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+        padding: 10px 25px;
+        border-radius: 15px;
+        background: linear-gradient(-90deg, #FF9191, #ffe76f, #86ff9b, #8499ff);
+        background-attachment: fixed;
+      }
+      .highlight {
+        text-decoration: underline;
+        text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+      }
+      h1 {
+        color: #1f1f1f;
+        font-size: -webkit-xxx-large;
+      }
+      button {
+        margin: auto;
+        font-size: xx-large;
+      }
+      .loginbtn {
+        font-family: monospace;
+        cursor: pointer;
+        color: blueviolet;
+        border-radius: 8px;
+        border: 1px solid;
+        padding: 5px 10px;
+        background: rgba(255, 255, 255, 0.3);
+      }
+    </style>
+  </head>
 
-    html {
-      height: 95%;
-    }
-
-    body {
-      display: flex;
-      margin: 0;
-      height: -webkit-fill-available;
-      background: linear-gradient(0deg, #0aff8e, #8bff50, #ff8c91, #8499ff);
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-color: #ff34345e;
-      background-blend-mode: darken;
-    }
-
-    .box {
-      display: flex;
-      flex-direction: column;
-      margin: auto;
-      padding: 10px 25px;
-      border-radius: 15px;
-      background: linear-gradient(-90deg, #FF9191, #ffe76f, #86ff9b, #8499ff);
-      background-attachment: fixed;
-    }
-
-    .highlight {
-      text-decoration: underline;
-      text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
-    }
-
-    h1 {
-      color: #1f1f1f;
-      font-size: -webkit-xxx-large;
-    }
-
-    button {
-      margin: auto;
-      font-size: xx-large;
-    }
-
-    .loginbtn {
-      font-family: monospace;
-      cursor: pointer;
-      color: blueviolet;
-      border-radius: 8px;
-      border: 1px solid;
-      padding: 5px 10px;
-      background: rgba(255, 255, 255, 0.3);
-    }
-  </style>
-</head>
-
-<body>
-  <div class="box">
-    <h1>Play <span class="highlight">Ludo</span> with Money.</h1>
-    <br>
-    <button type="button" class="loginbtn"> <a href="./game">Login with Facebook.</a> </button>
-  </div>
-</body>
+  <body>
+    <div class="box">
+      <h1>Play
+        <span class="highlight">Games</span>
+        and win/earn Money.</h1>
+      <br>
+      <button type="button" class="loginbtn">
+        <a href="./game">Login with Facebook.</a>
+      </button>
+    </div>
+  </body>
 
 </html>

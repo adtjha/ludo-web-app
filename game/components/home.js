@@ -9,6 +9,8 @@ function Home(x, y, size, radius, c) {
 
   this.steps = [];
 
+  this.outlineHover = false;
+
   // STEPS TO CREATE INNER CIRCLES.
   // 1. loop 4 times and create 4 cells, each cell contains the pawn.
   // 2. fill all the InnerCircles with pawn.
@@ -33,13 +35,17 @@ function Home(x, y, size, radius, c) {
     this.inner.forEach(e => {
       e.type = "HOME_SQUARE";
       e.color = "#FFF";
-      e.pawns = new Pawn((e.x - 25), (e.y - 25), this.c);
+      e.pawns.push(new Pawn((e.x - 25), (e.y - 25), this.c));
     });
   }
 
   this.render = () => {
     push();
     fill(color(this.c));
+    if (this.outlineHover) {
+      stroke(51);
+      strokeWeight(frameCount % 12);
+    }
     rect(this.x, this.y, this.size, this.size, this.borderRadius);
     pop();
   };

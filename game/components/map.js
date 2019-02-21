@@ -1,9 +1,3 @@
-var homeSquares = [],
-  finalSquares = [],
-  outerPath = [],
-  steps = [0, 1, 2, 4, 6, 8, 10, 12, 39, 41, 43, 45, 47, 49, 50, 51, 48, 46, 44, 42, 40, 14, 16, 18, 20, 22, 25, 24, 23, 21, 19, 17, 15, 13, 38, 36, 34, 32, 30, 28, 27, 26, 29, 31, 33, 35, 37, 11, 9, 7, 5, 3],
-  finalPath = [];
-
 // COLORS
 /**
 RED : (218,34,34)
@@ -11,14 +5,46 @@ GREEN : (89,209,56)
 BLUE :
 YELLOW :
 */
-// horizontal lines
-// [(0,0),(0,x)] => [(0,y),(x,y)]
-// vertical lines
-// [(0,0),(0,y)] => [(x,0),(x,y)]
 
-function createludoMap(x, y) {
-  this.xSize = x;
-  this.ySize = y;
+function createludoMap(x, y, size) {
+  this.x = x;
+  this.y = y;
+  this.size = size;
+  this.homeSquares = [];
+  this.finalSquares = [];
+  this.outerPath = [];
+  this.steps = [0, 1, 2, 4, 6, 8, 10, 12, 39, 41, 43, 45, 47, 49, 50, 51, 48, 46, 44, 42, 40, 14, 16, 18, 20, 22, 25, 24, 23, 21, 19, 17, 15, 13, 38, 36, 34, 32, 30, 28, 27, 26, 29, 31, 33, 35, 37, 11, 9, 7, 5, 3];
+  this.finalPath = [];
+
+  this.update = (a) => {
+    // highlight current square.
+    this.homeSquares.forEach(e => {
+      if (e.c === a.currentTeam) {
+        e.outlineHover = true;
+        // Check the dice Number and switch according.
+        if (a.dice) {
+          if (a.dice === 6) {
+            // Extra move.
+            // if in home getOut of home.
+            console.log('rolled : ' + a.dice);
+            if (!e.pawnsOut || e.pawnsOut.length === 0) {
+              // move pawn that has been touched.
+              e.pawnsOut.push(e.inner[e.inner.length - 1].pop());
+              e.pawnsOut[e.pawnsOut.length].move(e.steps.start[0].x, e.steps.start[0].y);
+
+            }
+          } else if (a.dice === 1 || a.dice === 2 || a.dice === 3 || a.dice === 4 || a.dice === 5) {
+            console.log('rolled : ' + a.dice);
+            ludo.changeTeam();
+          }
+        } else {
+          console.log("waiting to roll dice...");
+        }
+      } else {
+        e.outlineHover = false;
+      }
+    });
+  }
 
   this.initialize = () => {
     this.createPaths();
@@ -27,7 +53,7 @@ function createludoMap(x, y) {
   }
 
   this.render = () => {
-    this.background();
+    this.back();
     this.renderFinalSquare();
     this.renderHomeSquare();
     this.renderPaths();
@@ -44,13 +70,15 @@ function createludoMap(x, y) {
   //   // line(y/2, 0, y/2, x);
   // }
 
-  this.background = () => {
-    background(220);
+  this.back = () => {
+    background(180);
+    fill(color('blueviolet'))
+    rect(this.x, this.y, this.size, this.size, 20);
   };
 
   this.createfinalSquare = () => {
 
-    x = this.xSize / 2, y = this.ySize / 2, colors = [], size = 60;
+    x = this.x + (this.size / 2), y = this.y + (this.size / 2), colors = [], size = 60;
     radian = [];
     for (let i = 0; i < 4; i++) {
       switch (i) {
@@ -73,7 +101,7 @@ function createludoMap(x, y) {
       }
     }
     for (let i = 0; i < 4; i++) {
-      finalSquares.push(new Final(x, y, size, radian[i], colors[i]));
+      this.finalSquares.push(new Final(x, y, size, radian[i], colors[i]));
     }
     // ellipseMode(RADIUS);
     // fill(color('GREEN'));
@@ -87,7 +115,7 @@ function createludoMap(x, y) {
   };
 
   this.renderFinalSquare = () => {
-    finalSquares.forEach(e => {
+    this.finalSquares.forEach(e => {
       e.render();
     });
   };
@@ -96,11 +124,11 @@ function createludoMap(x, y) {
     x = [], y = [], colors = [], size = 200;
     radius = 20;
     for (let i = 0; i < 4; i++) {
-      x.push(i % 2 === 0 ? 0 : 400);
+      x.push(i % 2 === 0 ? this.x : (this.x + this.size) - size);
       if (i < 2) {
-        y.push(0);
+        y.push(this.y);
       } else {
-        y.push(400);
+        y.push((this.y + this.size) - size);
       }
       switch (i) {
         case 0:
@@ -118,9 +146,9 @@ function createludoMap(x, y) {
       }
     }
     for (let i = 0; i < 4; i++) {
-      homeSquares.push(new Home(x[i], y[i], size, radius, colors[i]));
+      this.homeSquares.push(new Home(x[i], y[i], size, radius, colors[i]));
     }
-    homeSquares.forEach(elem => {
+    this.homeSquares.forEach(elem => {
       elem.createInnerCircles();
       elem.steps = arrangePath(elem.c);
       console.log(elem.steps);
@@ -136,10 +164,10 @@ function createludoMap(x, y) {
   };
 
   this.renderHomeSquare = () => {
-    homeSquares.forEach(e => {
+    this.homeSquares.forEach(e => {
       e.render();
     });
-    homeSquares.forEach(e => {
+    this.homeSquares.forEach(e => {
       e.inner.forEach(e => {
         e.render();
       });
@@ -149,79 +177,79 @@ function createludoMap(x, y) {
 
   this.createPaths = () => {
     var size = 30,
-      spacing = 0,
+      spacing = this.y,
       inner_spacing = 10,
-      offset = size / 2;
+      offset = size / 2 + spacing;
     // top-side paths.
     for (var i = 0; i < 6; i++) {
       // ellipse(240, offset+(i*size + i*inner_spacing), size, size);
-      outerPath.push(new Cell(240, offset + (i * size + i * inner_spacing), size, "TOP"));
+      this.outerPath.push(new Cell(this.x + 240, offset + (i * size + i * inner_spacing), size, "TOP"));
       if (i === 0) {
         // ellipse(300, offset+(i*size + i*inner_spacing), size, size)
-        outerPath.push(new Cell(300, offset + (i * size + i * inner_spacing), size, "TOP"));
+        this.outerPath.push(new Cell(this.x + 300, offset + (i * size + i * inner_spacing), size, "TOP"));
       } else {
-        finalPath.push(new Cell(300, offset + (i * size + i * inner_spacing), size, "TOP"))
+        this.finalPath.push(new Cell(this.x + 300, offset + (i * size + i * inner_spacing), size, "TOP"))
       }
       // ellipse(360, offset+(i*size + i*inner_spacing), size, size);
-      outerPath.push(new Cell(360, offset + (i * size + i * inner_spacing), size, "TOP"));
+      this.outerPath.push(new Cell(this.x + 360, offset + (i * size + i * inner_spacing), size, "TOP"));
     }
     // bottom-side paths.
-    spacing += 370;
+    spacing = this.y + 370;
     offset = size / 2 + spacing;
     for (var i = 0; i < 6; i++) {
       // ellipse(240, offset+(i*size + i*inner_spacing), size, size);
-      outerPath.push(new Cell(240, offset + (i * size + i * inner_spacing), size, "BOTTOM"))
+      this.outerPath.push(new Cell(this.x + 240, offset + (i * size + i * inner_spacing), size, "BOTTOM"))
       if (i === 5) {
         // ellipse(300, offset+(i*size + i*inner_spacing), size, size);
-        outerPath.push(new Cell(300, offset + (i * size + i * inner_spacing), size, "BOTTOM"))
+        this.outerPath.push(new Cell(this.x + 300, offset + (i * size + i * inner_spacing), size, "BOTTOM"))
       } else {
-        finalPath.push(new Cell(300, offset + (i * size + i * inner_spacing), size, "BOTTOM"))
+        this.finalPath.push(new Cell(this.x + 300, offset + (i * size + i * inner_spacing), size, "BOTTOM"))
       }
       // ellipse(360, offset+(i*size + i*inner_spacing), size, size);
-      outerPath.push(new Cell(360, offset + (i * size + i * inner_spacing), size, "BOTTOM"))
+      this.outerPath.push(new Cell(this.x + 360, offset + (i * size + i * inner_spacing), size, "BOTTOM"))
     }
     // left-side paths.
-    spacing = 0,
+    spacing = this.x,
       offset = size / 2 + spacing;
     for (var i = 0; i < 6; i++) {
       // ellipse(offset+(i*size + i*inner_spacing), 240, size, size);
-      outerPath.push(new Cell(offset + (i * size + i * inner_spacing), 240, size, "LEFT"));
+      this.outerPath.push(new Cell(offset + (i * size + i * inner_spacing), this.y + 240, size, "LEFT"));
       if (i === 0) {
         // ellipse(offset+(i*size + i*inner_spacing), 300, size, size);
-        outerPath.push(new Cell(offset + (i * size + i * inner_spacing), 300, size, "LEFT"));
+        this.outerPath.push(new Cell(offset + (i * size + i * inner_spacing), this.y + 300, size, "LEFT"));
       } else {
-        finalPath.push(new Cell(offset + (i * size + i * inner_spacing), 300, size, "LEFT"));
+        this.finalPath.push(new Cell(offset + (i * size + i * inner_spacing), this.y + 300, size, "LEFT"));
       }
       // ellipse(offset+(i*size + i*inner_spacing), 360, size, size);
-      outerPath.push(new Cell(offset + (i * size + i * inner_spacing), 360, size, "LEFT"));
+      this.outerPath.push(new Cell(offset + (i * size + i * inner_spacing), this.y + 360, size, "LEFT"));
     }
     // right-side paths.
-    spacing += 370;
+    spacing = this.x + 370;
     offset = size / 2 + spacing;
     for (var i = 0; i < 6; i++) {
       // ellipse(offset+(i*size + i*inner_spacing), 240, size, size);
-      outerPath.push(new Cell(offset + (i * size + i * inner_spacing), 240, size, "RIGHT"))
+      this.outerPath.push(new Cell(offset + (i * size + i * inner_spacing), this.y + 240, size, "RIGHT"))
       if (i === 5) {
         // ellipse(offset+(i*size + i*inner_spacing), 300, size, size);
-        outerPath.push(new Cell(offset + (i * size + i * inner_spacing), 300, size, "RIGHT"))
+        this.outerPath.push(new Cell(offset + (i * size + i * inner_spacing), this.y + 300, size, "RIGHT"))
       } else {
-        finalPath.push(new Cell(offset + (i * size + i * inner_spacing), 300, size, "RIGHT"))
+        this.finalPath.push(new Cell(offset + (i * size + i * inner_spacing), this.y + 300, size, "RIGHT"))
       }
       // ellipse(offset+(i*size + i*inner_spacing), 360, size, size);
-      outerPath.push(new Cell(offset + (i * size + i * inner_spacing), 360, size, "RIGHT"))
+      this.outerPath.push(new Cell(offset + (i * size + i * inner_spacing), this.y + 360, size, "RIGHT"))
     }
 
     // arrangePath();
     assignType = () => {
-      outerPath.forEach(cell => {
+      this.outerPath.forEach(cell => {
         cell.type = "OUTER_PATH"
       });
-      finalPath.forEach(cell => {
+      this.finalPath.forEach(cell => {
         cell.type = "FINAL_PATH"
       });
     };
     assignColor = () => {
-      outerPath.forEach((cell, index) => {
+      this.outerPath.forEach((cell, index) => {
         cell.color = () => {
           if (index === 4) {
             return ["YELLOW"];
@@ -252,7 +280,7 @@ function createludoMap(x, y) {
           }
         };
       });
-      finalPath.forEach((cell, index) => {
+      this.finalPath.forEach((cell, index) => {
 
         // cell.index = (index < 10) ? ('0' + index.toString()) : index;
         cell.index = index;
@@ -285,11 +313,12 @@ function createludoMap(x, y) {
     arrangePath = (color) => {
       route = {
         team: color,
+        out: false,
         start: [],
         mid: [],
         end: []
       };
-      outerPath.forEach((cell) => {
+      this.outerPath.forEach((cell) => {
         if (cell.color()[0] != "#ccc" && cell.color()[0] === route.team) {
           route.start.push(cell);
           return;
@@ -298,9 +327,9 @@ function createludoMap(x, y) {
         }
       });
 
-      route.mid = rearrange(route);
+      route.mid = rearrange(route, this.outerPath, this.steps);
 
-      finalPath.forEach(cell => {
+      this.finalPath.forEach(cell => {
         if (cell.color()[0] === route.team) {
           route.end.push(cell);
           return;
@@ -316,39 +345,30 @@ function createludoMap(x, y) {
   }
 
   this.renderPaths = () => {
-    outerPath.forEach(cell => {
+    this.outerPath.forEach(cell => {
       cell.render()
     });
-    finalPath.forEach(cell => {
+    this.finalPath.forEach(cell => {
       cell.render()
     });
   }
 
-}
-
-function rearrange(route) {
-  // check the index of starting point,
-  // set start =  index of starting point, ==> loop_counter = start
-  counter = int(steps.findIndex((a) => {
-    if (a === route.start[0].index) {
-      return a
+  function rearrange(route, outer, steps) {
+    // check the index of starting point,
+    // set start =  index of starting point, ==> loop_counter = start
+    counter = int(steps.findIndex((a) => {
+      if (a === route.start[0].index) {
+        return a
+      }
+    })) + 1;
+    arranged = false;
+    mid = [];
+    // in each loop store the current cell, ==> route.mid.push(step[loop_counter]),
+    for (let i = 0; i < steps.length - 2; i++) {
+      mid.push(outer[steps[counter]]);
+      counter = (counter <= 50) ? counter + 1 : 0;
     }
-  })) + 1;
-  arranged = false;
-  mid = [];
-  // in each loop store the current cell, ==> route.mid.push(step[loop_counter]),
-  for (let i = 0; i < steps.length - 2; i++) {
-    mid.push(outerPath[steps[counter]]);
-    counter = (counter <= 50) ? counter + 1 : 0;
-  }
-  // loop through steps[] starting from start, ==> loop_counter++
-  // incremeant loop till the modulus of loop_counter reaches 0 again, ==> (loop_counter%48 != 0)?LOOP_AGAIN:BREAK;
-  return mid;
-  // return the arranged route;
-}
-
-function nxt(a, b) {
-  if (a < b.length) {
-    return b(a + 1);
+    // return the arranged route;
+    return mid;
   }
 }
