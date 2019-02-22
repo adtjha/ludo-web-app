@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GAME</title>
     <style>
+      * {
+        font-family: sans-serif;
+      }
       body {
         padding: 0;
         margin: auto;
@@ -16,10 +19,11 @@
         margin: auto;
         outline: 3px solid lightgreen !important;
       }
+      .hide {
+        display: none !important;
+      }
       .button {
-        position: absolute;
-        top: 350px;
-        left: 200px;
+        margin: 1rem auto auto;
         background: 0;
         border: 3px solid #444;
         color: #666;
@@ -32,13 +36,25 @@
         border-color: #000;
       }
       .input {
-        position: absolute;
-        top: 250px;
-        left: 230px;
+        margin: auto auto 1rem;
         text-align: center;
         border: 0;
         width: 200px;
         text-decoration: underline;
+        font-size: -webkit-xxx-large;
+      }
+      .options {
+        background: aliceblue;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .row {
+        margin: auto auto 1rem;
         font-size: -webkit-xxx-large;
       }
     </style>
@@ -54,6 +70,14 @@
     <script src="sketch.js"></script>
   </head>
 
-  <body></body>
+  <body>
+    <div class="options">
+      <div class="row">
+        <label for="players">Players :</label>
+        <input type="number" class="input" name="players" value="4" max="4" min="1" onchange="()=>{options.players = this.value}">
+      </div>
+      <button type="button" class="button" name="button" onclick="startGame()">Start</button>
+    </div>
+  </body>
 
 </html>

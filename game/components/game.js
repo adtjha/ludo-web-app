@@ -5,14 +5,18 @@ class Game {
       y: y
     }
     this.size = size
-    this.players = option.players
-    this.comp = option.comp
+    this.players = options.players
+    this.comp = options.comp
+    this.canvas = createCanvas(this.size, this.size)
   }
+}
 
-  this.board = () => {
+Game.prototype.start = () => {
+  console.log("Game started");
+}
 
-  }
-
+Game.prototype.show = () => {
+  background(127)
 }
 
 
