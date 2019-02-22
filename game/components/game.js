@@ -1,5 +1,19 @@
+class Game {
+  constructor(x, y, size, options) {
+    this.pos = {
+      x: x,
+      y: y
+    }
+    this.size = size
+    this.players = option.players
+    this.comp = option.comp
+  }
 
+  this.board = () => {
 
+  }
+
+}
 
 
 
