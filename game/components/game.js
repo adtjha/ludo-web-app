@@ -8,11 +8,67 @@ class Game {
     this.players = options.players
     this.comp = options.comp
     this.canvas = createCanvas(this.size, this.size)
+    this.ended = false
   }
 }
 
 Game.prototype.start = () => {
-  console.log("Game started");
+  teams = ['GREEN', 'RED', 'BLUE', 'YELLOW']
+  this.teams = {}
+  for (let i = 0; i < this.players; i++) {
+    pawns = {}
+    pawns.out = 0
+    pawns.inside = 4
+    pawns.reached = 0
+    this.teams[team[i]] = pawns
+  }
+  this.currentTeam = this.teams[random(teams)]
+  this.turn()
+}
+
+Game.prototype.turn = () => {
+  if (this.ended) {
+    this.end()
+  } else if (!this.ended) {
+    this.pawnState = this.teams[this.currentTeam].pawns
+    this.playMove()
+    if (this.userMove) {
+      // move = {}
+      // move.playedBy = this.currentTeam
+      // move.play = this.userMove
+      // this.history.push(move)
+      // this.updateBoard()
+      // this.updateTeams()
+    }
+  }
+}
+
+Game.prototype.playMove = () => {
+  console.log("Team : " + this.currentTeam)
+  console.log("Waiting for a move")
+  if (selected) {
+    this.userMove = selected
+    legal = this.checkLegal(this.userMove)
+    if (legal) {
+      this.move(this.userMove)
+      return
+    }
+  }
+}
+
+
+Game.prototype.checkLegal = () => {
+  if (this.pawnState.out > 1) {
+
+  } else if (this.pawnState.out === 1 ) {
+
+  } else if (this.pawnState.out === 0) {
+    
+  }
+}
+
+Game.prototype.move = (pawn, from, to) => {
+
 }
 
 Game.prototype.show = () => {
