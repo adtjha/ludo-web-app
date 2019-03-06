@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <style media="screen">
+      * {
+        font-family: sans-serif;
+      }
+      html {
+        height: 95%;
+      }
+      body {
+        display: flex;
+        margin: 0;
+        height: -webkit-fill-available;
+        background: #2e2e2e;
+        background-blend-mode: darken;
+      }
+      .box {
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+        padding: 10px 25px;
+        border-radius: 15px;
+        width: 75%;
+        border: 1px solid #fff;
+        color: #000;
+        text-shadow: 0 0 2px #b3b3b3;
+        background: rgb(85, 255, 128);
+        color: #2e2e2e;
+      }
+      h1 {
+        color: #1f1f1f;
+        font-size: 2rem;
+        text-align: -webkit-center;
+      }
+      button {
+        margin: auto;
+        font-size: xx-large;
+        font-family: monospace;
+        cursor: pointer;
+        color: #fbfbfb;
+        border-radius: 8px;
+        border: 1px solid;
+        padding: 5px 10px;
+        background: rgb(156, 156, 156);
+      }
+      .loginBtn {
+        background: rgb(85, 255, 128);
+        color: #2e2e2e;
+      }
+      .registerBtn {
+        background: #cb93ff;
+        color: #2e2e2e;
+      }
+      button > a {
+        color: inherit;
+        text-decoration: none;
+        font-weight: 600;
+        font-family: monospace;
+      }
+      .loginForm {
+        display: flex;
+        flex-direction: column;
+        padding: 5px;
+        margin: auto;
+      }
+      .formElement {
+        margin: 1rem 0;
+        font-size: x-large;
+        display: flex;
+        flex-direction: column;
+        background: #2e2e2e;
+        color: #fff;
+        padding: 4px;
+        border-radius: 5px;
+      }
+      input {
+        border: 0;
+        background: 0;
+        font-size: 1.4rem;
+        width: 90.56%;
+        margin-top: 10px;
+        margin-inline-start: 25px;
+        margin-inline-end: -25px;
+      }
+      input:focus {
+        outline: none;
+      }
+      label {
+        background: blueviolet;
+        padding: 2px;
+        border-radius: 2px;
+        padding-inline-start: 8px;
+      }
+      button {
+        margin: auto;
+        font-size: xx-large;
+        font-family: monospace;
+        cursor: pointer;
+        color: #fbfbfb;
+        border-radius: 8px;
+        border: 1px solid;
+        padding: 5px 10px;
+        background: rgb(156, 156, 156);
+      }
+      .loginBtn {
+        background: rgb(85, 255, 128);
+        color: #2e2e2e;
+      }
+      .registerBtn {
+        background: #cb93ff;
+        color: #2e2e2e;
+      }
+      button > a {
+        color: inherit;
+        text-decoration: none;
+        font-weight: 600;
+        font-family: monospace;
+      }
+      .nav {
+        display: flex;
+        flex-direction: row;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="box">
+      <h1>Login</h1>
+      <form class="loginForm" action="index.html" method="post">
+        <div class="formElement">
+          <label for="name">name :</label>
+          <input type="text" name="name" placeholder="your name here">
+        </div>
+        <div class="formElement">
+          <label for="password">password :</label>
+          <input type="password" name="password" placeholder="****" minlength="4" maxlength="4" autocomplete="current-password">
+        </div>
+      </form>
+
+      <div class="nav">
+        <button type="submit" class="loginBtn">
+          <a>Submit</a>
+        </button>
+        <br/>
+        <button type="button" class="registerBtn">
+          <a href="./register">Register</a>
+        </button>
+      </div>
+    </div>
+  </body>
+
+</html>

@@ -7,7 +7,7 @@
    1. check for all the currentTeam's pawns loacation, and store it in state.
    2. Set the `movesAllowed` object with the pawns that can be moved and by how many steps that pawn can move at maximum, at minimum.
    3. Ask for user move `playMove() ==> userMove` and,
-      1.  if `isLegalMove(userMove)` returns true than store it in `movePlayed()` 
+      1.  if `isLegalMove(userMove)` returns true than store it in `movePlayed{}` 
       2. if it returns false then send error and ask user to `playMove()` again, and show error.
    4. if `movePlayed != undefined` than, `game.move(movePlayed.from, movePlayed.to)`,
    5. if all the pawns have reached the final stage[`checkFinal(state)`], then call `game.final()` ,
@@ -15,7 +15,7 @@
 7. when a team has successfully moved all of its pawns to the final stage, `game.final()` is called,
    1. push it in `game.winners` array, 
    2. if `game.winners.length === 2`, then set `game.ended === true` 
-8.  `game.end()` is called when, `game.ended` is true,
-   1. take the screen shot and save it in `game.VictoryImage`,
-   2. Show the winners,
-   3. give the option for game restart.
+8. `game.end()` is called when, `game.ended` is true,
+   9. take the screen shot and save it in `game.VictoryImage`,
+   10. Show the winners,
+   11. give the option for game restart.

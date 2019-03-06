@@ -39,7 +39,7 @@
         margin: auto auto 1rem;
         text-align: center;
         border: 0;
-        width: 200px;
+        width: fit-content;
         text-decoration: underline;
         font-size: -webkit-xxx-large;
       }
@@ -74,7 +74,7 @@
     <div class="options">
       <div class="row">
         <label for="players">Players :</label>
-        <input type="number" class="input" name="players" value="4" max="4" min="1" onchange="()=>{options.players = this.value}">
+        <input type="number" class="input" name="players" value="4" max="4" min="1" onchange="(()=>{options.players = this.value;console.log(options)})()">
       </div>
       <button type="button" class="button" name="button" onclick="startGame()">Start</button>
     </div>

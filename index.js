@@ -15,3 +15,13 @@ app.get('/', (req, res) => {
 })
 
 app.use('/game', express.static('game'))
+
+app.get('/login', (req, res) => {
+  // res.render('index');
+  res.sendFile('login.html', {root: 'views'});
+})
+
+app.get('/register', (req, res) => {
+  // res.render('index');
+  res.sendFile('register.html', {root: 'views'});
+})
