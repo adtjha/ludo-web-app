@@ -15,12 +15,12 @@ class Game {
     this.selected = {
       move: undefined,
       pawn: undefined
-    }//USED WHEN USER SELECTS A PIECE TO MOVE.
+    } //USED WHEN USER SELECTS A PIECE TO MOVE.
     this.played = false
     // SAVES THE WINNERS.
     this.winners = []
   }
-// FIRST TIME RUN
+  // FIRST TIME RUN
   start = () => {
     // String names of the Teams.
     var teams = ['GREEN', 'RED', 'BLUE', 'YELLOW']
@@ -36,19 +36,29 @@ class Game {
       for (let i = 0; i < 4; i++) {
         var pawn = {}
         // Storing Label names in order to identify each pawn.
-        pawn.label = teams[j].toString() + "_" + i.toString();
+        pawn.label = {
+          team: teams[j].toString(),
+          name: i.toString()
+        };
         // Place Object stores each pawn's current place and the available moves.
         pawn.place = {
           step: 0,
-          movesPlayed: {1:3,2:3,3:3,4:3,5:2,6:2}
+          movesPlayed: {
+            1: 3,
+            2: 3,
+            3: 3,
+            4: 3,
+            5: 2,
+            6: 2
+          }
         }
         // State Object is an arrow function, which when called returns the current state of the pawn, ["out", "inside", "reached"]
-        pawn.state = (team) => {
-          if (this.teams[team].pawns.place.step > 0 && this.teams[team].pawns.place.step < 56) {
+        pawn.state = (team, pawn) => {
+          if (this.teams[team].pawns[pawn].place.step > 0 && this.teams[team].pawns[pawn].place.step < 56) {
             return 'out'
-          } else if (this.teams[team].pawns.place.step === 56) {
+          } else if (this.teams[team].pawns[pawn].place.step === 56) {
             return 'reached'
-          } else if (this.teams[team].pawns.place.step < 1 && this.teams[team].pawns.place.step) {
+          } else if (this.teams[team].pawns[pawn].place.step < 1) {
             return 'inside'
           }
         }
@@ -61,37 +71,32 @@ class Game {
   }
 
   // CHANGES THE TURN BY CHANGING THE CURRENT-TEAM PLAYING
-  changeTurn(){
-    teams = Object.keys(this.teams)
+  changeTurn() {
+    console.log("Called For Changing, Current Turn is finished");
+    var teams = Object.keys(this.teams)
     for (let i = 0; i < teams.length; i++) {
       if (teams[i] === this.currentTeam && i < teams.length - 2) {
-        this.currentTeam = teams[i+1]
-      } else if (teams[i] === this.currentTeam && i  === teams.length - 1) {
+        this.currentTeam = teams[i + 1]
+      } else if (teams[i] === this.currentTeam && i === teams.length - 1) {
         this.currentTeam = teams[0]
       }
     }
-    this.turn()
+    // this.turn()
   }
 
   // DOES THE ACTIONS THAT ARE REQUIRED FOR A TURN, MOVING A PEICE, THEN CHANGING TURN.
-  turn(){
+  turn() {
     if (!this.playing) {
       console.log(this.playing)
       this.end()
     } else if (this.playing) {
-      this.pawnState = this.teams[this.currentTeam].pawns
-      this.playMove()
-      if (this.userMove) {
-        this.playedBy = this.currentTeam
-        this.played = this.userMove
-        this.teams[this.currentTeam].history.push(move)
-        this.updateBoard()
-      }
+      // this.pawnState = this.teams[this.currentTeam].pawns
+      this.play()
     }
   }
 
-   // CALLS THE MOVE FUNCTION, AFTER CHECKING IF MOVE IS VALID AND LEGAL.
-  play(){
+  // CALLS THE MOVE FUNCTION, AFTER CHECKING IF MOVE IS VALID AND LEGAL.
+  play() {
     console.log("Team : " + this.currentTeam)
     console.log("Waiting for a move")
     var current = this.currentTeam
@@ -104,8 +109,8 @@ class Game {
       } else {
         if (legal && !valid) {
           count = 0
-          this.teams[current].pawns.forEach(pawn => {
-            if (pawn.state() === 'reached') {
+          this.teams[current].pawns.forEach((pawn, index) => {
+            if (pawn.state(current, index) === 'reached') {
               count++
             }
           })
@@ -122,36 +127,36 @@ class Game {
   }
 
   // MOVES A PEICE ON THE BOARD ACCORDING TO THE SELECTED PEICE.
-  move(name, steps){
+  move(name, steps) {
+    var current = this.currentTeam
     console.log(current, this.teams);
-      var current = this.currentTeam
-      var count = 0
-      this.teams[current].pawns.forEach(pawn => {
-        if (pawn.label === name) {
-          for (let i = 0; i < steps; i++) {
-            pawn.place.step++
-          }
-          console.log(moved)
+    var count = 0
+    this.teams[current].pawns.forEach(pawn => {
+      if (pawn.label === name) {
+        for (let i = 0; i < steps; i++) {
+          pawn.place.step++
         }
-      })
-      this.changeTurn()
-      return
+        console.log(moved)
+      }
+    })
+    this.changeTurn()
+    return
   }
 
-
-  end(){
+  // CALLED WHEN THE GAME HAS ENDED.
+  end() {
     this.playing = false
     // var victoryImage = saveImage()
-    console.log("Winners : "+ this.winners);
+    console.log("Winners : " + this.winners);
   }
 
   // this.move.dispatchEvent('move')
 
-  show(){
+  show() {
     background(127)
   }
 
-  checkValidity(userMove){
+  checkValidity(userMove) {
     if (this.teams[this.currentTeam].pawns[userMove.pawn].state === "reached") {
       return false
     } else {
@@ -159,26 +164,29 @@ class Game {
     }
   }
 
-  checkLegal(userMove){
-    // console.log(userMove, this.teams, this.currentTeam);
-    switch (this.teams[this.currentTeam].pawns[userMove.pawn-1].state) {
+  checkLegal(userMove) {
+    console.log(userMove);
+    var pawn = (this.teams[this.currentTeam].pawns[userMove.pawn]);
+    console.log(pawn.state(this.currentTeam, pawn.label.name));
+    switch (pawn.state(this.currentTeam, pawn.label.name)) {
       case "inside":
-      if (userMove.move === 1) {
-        return true
-      } else {
-        return false
-      }
-      break
+        console.log(userMove.move);
+        if (userMove.move == 1) {
+          return true
+        } else if (userMove.move != 1) {
+          return false
+        }
+        break
       case "reached":
-      return false
-      break
-      case "out":
-      if (availableMoves(this.teams[this.currentTeam].pawns.moves, this.teams[this.currentTeam].selected.move)) {
-        return true
-      } else {
         return false
-      }
-      break
+        break
+      case "out":
+        if (availableMoves(this.teams[this.currentTeam].pawns.moves, this.teams[this.currentTeam].selected.move)) {
+          return true
+        } else {
+          return false
+        }
+        break
     }
     console.log("here.. still not returned");
   }
@@ -186,17 +194,24 @@ class Game {
 
 }
 
-function availableMoves(moves, move){
+function availableMoves(moves, move) {
+  console.log("here");
   if (Object.Keys(move)[0] >= 1 && Object.Keys(move)[0] <= 4) {
+    console.log(true, 'Conditional A');
     if (moves[Object.keys(move)[0]] >= 0 && moves[Object.keys(move)[0]] <= 3) {
+      console.log(true, 'Conditional A 1');
       return true
     } else {
+      console.log(true, 'Conditional A 2');
       return false
     }
   } else if (Object.Keys(move)[0] >= 5 && Object.Keys(move)[0] <= 6) {
+    console.log(true, 'Conditional B');
     if (moves[Object.keys(move)[0]] >= 0 && moves[Object.keys(move)[0]] <= 2) {
+      console.log(true, 'Conditional B 1');
       return true
     } else {
+      console.log(true, 'Conditional B 2');
       return false
     }
   }
